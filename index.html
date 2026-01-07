@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="tr" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game+ | Bulut Oyun Platformu</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            green: '#76b900', 
+                            dark: '#0a0a0a',
+                            panel: '#151515',
+                            hover: '#1a1a1a'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Dropdown Animasyonları (Desktop Hover) */
+        @media (min-width: 768px) {
+            .group:hover .dropdown-menu {
+                display: block;
+                animation: fadeIn 0.2s ease-out;
+            }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Footer Akordiyon */
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        }
+        .accordion-content.active {
+            max-height: 500px; /* İçeriğe göre ayarlanır */
+            transition: max-height 0.5s ease-in;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #000; }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #76b900; }
+    </style>
+</head>
+<body class="bg-brand-dark text-white font-sans antialiased overflow-x-hidden flex flex-col min-h-screen">
+
+    <!-- Navbar -->
+    <nav class="fixed w-full z-50 bg-brand-dark/95 backdrop-blur-md border-b border-white/10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Logo (Görseldeki gibi sade tipografi) -->
+                <div class="flex-shrink-0 flex items-center cursor-pointer">
+                    <span class="font-black text-3xl tracking-tighter text-white italic">GAME<span class="text-brand-green not-italic">+</span></span>
+                </div>
+
+                <!-- Desktop Menü -->
+                <div class="hidden lg:flex space-x-6 items-center text-sm font-medium">
+                    
+                    <!-- GeForce NOW Dropdown -->
+                    <div class="relative group">
+                        <button class="flex items-center space-x-1 hover:text-brand-green transition py-6">
+                            <span>GeForce NOW</span>
+                            <i class="fa-solid fa-chevron-down text-[10px] opacity-50 group-hover:opacity-100 transition"></i>
+                        </button>
+                        <div class="dropdown-menu hidden absolute left-0 top-full w-48 bg-brand-panel border border-white/10 rounded-lg shadow-xl py-2 z-50">
+                            <a href="#" class="block px-4 py-2 hover:bg-white/5 hover:text-brand-green transition">Oyunlar</a>
+                            <a href="#" class="block px-4 py-2 hover:bg-white/5 hover:text-brand-green transition">Paketler</a>
+                            <a href="#" class="block px-4 py-2 hover:bg-white/5 hover:text-brand-green transition">İndir ve Oyna</a>
+                            <a href="#" class="block px-4 py-2 hover:bg-white/5 hover:text-brand-green transition">Nasıl Çalışır?</a>
+                        </div>
+                    </div>
+
+                    <!-- Ubisoft+ Dropdown -->
+                    <div class="relative group">
+                        <button class="flex items-center space-x-1 hover:text-brand-green transition py-6">
+                            <span>Ubisoft+</span>
+                            <i class="fa-solid fa-chevron-down text-[10px] opacity-50 group-hover:opacity-100 transition"></i>
+                        </button>
+                        <div class="dropdown-menu hidden absolute left-0 top-full w-48 bg-brand-panel border border-white/10 rounded-lg shadow-xl py-2 z-50">
+                            <a href="#" class="block px-4 py-2 hover:bg-white/5 hover:text-brand-green transition">Oyunlar</a>
+                            <a href="#" class="block px-4 py-2 hover:bg-white/5 hover:text-brand-green transition">Paketler</a>
+                            <a href="#" class="block px-4 py-2 hover:bg-white/5 hover:text-brand-green transition">İndir ve Oyna</a>
+                            <a href="#" class="block px-4 py-2 hover:bg-white/5 hover:text-brand-green transition">Nasıl Çalışır?</a>
+                        </div>
+                    </div>
+
+                    <!-- Paketler Dropdown -->
+                    <div class="relative group">
+                        <button class="flex items-center space-x-1 hover:text-brand-green transition py-6">
+                            <span>Paketler</span>
+                            <i class="fa-solid fa-chevron-down text-[10px] opacity-50 group-hover:opacity-100 transition"></i>
+                        </button>
+                        <div class="dropdown-menu hidden absolute left-0 top-full w-56 bg-brand-panel border border-white/10 rounded-lg shadow-xl py-2 z-50">
+                            <a href="#" class="block px-4 py-2 hover:bg-white/5 hover:text-brand-green transition">GeForce NOW Paketleri</a>
+                            <a href="#" class="block px-4 py-2 hover:bg-white/5 hover:text-brand-green transition">Ubisoft+ Paketleri</a>
+                        </div>
+                    </div>
+
+                    <!-- Desteklenen Oyunlar Dropdown (Kategoriler) -->
+                    <div class="relative group">
+                        <button class="flex items-center space-x-1 hover:text-brand-green transition py-6">
+                            <span>Desteklenen Oyunlar</span>
+                            <i class="fa-solid fa-chevron-down text-[10px] opacity-50 group-hover:opacity-100 transition"></i>
+                        </button>
+                        <!-- Revize Edilmiş Dikey Dropdown -->
+                        <div class="dropdown-menu hidden absolute left-0 top-full w-[350px] bg-brand-panel border border-white/10 rounded-lg shadow-xl p-4 z-50">
+                            
+                            <!-- Bölüm 1: GeForce NOW Kategorileri -->
+                            <div class="mb-3">
+                                <!-- GeForce NOW Başlığı - Ubisoft+ stili tıklanabilir ve interaktif yapıldı -->
+                                <a href="#" class="flex items-center justify-between px-2 py-2 mb-2 rounded hover:bg-white/5 group/g transition border-b border-white/5 pb-2">
+                                    <span class="flex items-center gap-2 text-white text-sm font-bold tracking-wide uppercase group-hover/g:text-brand-green transition">
+                                        <i class="fa-brands fa-nvidia text-brand-green group-hover/g:text-brand-green"></i>
+                                        GeForce NOW Oyunları
+                                    </span>
+                                    <i class="fa-solid fa-chevron-right text-[10px] text-gray-600 group-hover/g:text-brand-green transition"></i>
+                                </a>
+
+                                <div class="grid grid-cols-2 gap-1 pl-2">
+                                    <a href="#" class="block px-2 py-1.5 rounded hover:bg-white/5 hover:text-brand-green transition text-gray-300 text-sm">Aksiyon</a>
+                                    <a href="#" class="block px-2 py-1.5 rounded hover:bg-white/5 hover:text-brand-green transition text-gray-300 text-sm">Macera</a>
+                                    <a href="#" class="block px-2 py-1.5 rounded hover:bg-white/5 hover:text-brand-green transition text-gray-300 text-sm">Canlandırma (RPG)</a>
+                                    <a href="#" class="block px-2 py-1.5 rounded hover:bg-white/5 hover:text-brand-green transition text-gray-300 text-sm">Strateji</a>
+                                    <a href="#" class="block px-2 py-1.5 rounded hover:bg-white/5 hover:text-brand-green transition text-gray-300 text-sm">Simülasyon</a>
+                                    <a href="#" class="block px-2 py-1.5 rounded hover:bg-white/5 hover:text-brand-green transition text-gray-300 text-sm">Spor</a>
+                                    <a href="#" class="block px-2 py-1.5 rounded hover:bg-white/5 hover:text-brand-green transition text-gray-300 text-sm">Yarış</a>
+                                    <a href="#" class="block px-2 py-1.5 rounded hover:bg-white/5 hover:text-brand-green transition text-gray-300 text-sm">FPS</a>
+                                    <a href="#" class="block px-2 py-1.5 rounded hover:bg-white/5 hover:text-brand-green transition text-gray-300 text-sm">Oynaması Ücretsiz</a>
+                                </div>
+                            </div>
+
+                            <!-- Bölüm 2: Ubisoft+ (Tek Satır Link) -->
+                            <div class="mb-3 pt-2 border-t border-white/10">
+                                <a href="#" class="flex items-center justify-between px-2 py-2 rounded hover:bg-white/5 group/u transition">
+                                    <span class="flex items-center gap-2 text-white text-sm font-bold tracking-wide uppercase group-hover/u:text-brand-green transition">
+                                        <i class="fa-solid fa-gamepad text-blue-500"></i>
+                                        Ubisoft+ Oyunları
+                                    </span>
+                                    <i class="fa-solid fa-chevron-right text-[10px] text-gray-600 group-hover/u:text-brand-green transition"></i>
+                                </a>
+                            </div>
+
+                            <!-- Bölüm 3: Tüm Kategoriler (En Altta) -->
+                            <a href="#all-categories" class="block w-full px-3 py-2.5 rounded bg-white/5 hover:bg-brand-green hover:text-black transition text-center text-sm font-bold border border-white/10 hover:border-transparent">
+                                Tüm Kategoriler
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Fırsatlar (Top Level) -->
+                    <a href="#" class="hover:text-brand-green transition">Fırsatlar</a>
+
+                    <!-- Blog Dropdown -->
+                    <div class="relative group">
+                        <button class="flex items-center space-x-1 hover:text-brand-green transition py-6">
+                            <span>Blog</span>
+                            <i class="fa-solid fa-chevron-down text-[10px] opacity-50 group-hover:opacity-100 transition"></i>
+                        </button>
+                        <div class="dropdown-menu hidden absolute right-0 top-full w-48 bg-brand-panel border border-white/10 rounded-lg shadow-xl py-2 z-50">
+                            <a href="#" class="block px-4 py-2 hover:bg-white/5 hover:text-brand-green transition">Haberler</a>
+                            <a href="#" class="block px-4 py-2 hover:bg-white/5 hover:text-brand-green transition">Oyun İncelemeleri</a>
+                            <a href="#" class="block px-4 py-2 hover:bg-white/5 hover:text-brand-green transition">GFN Yazıları</a>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Aksiyon Butonları -->
+                <div class="hidden lg:flex items-center space-x-4">
+                    <button class="text-sm font-medium hover:text-white text-gray-400 transition">Giriş Yap</button>
+                    <button class="bg-white text-black px-6 py-2.5 rounded-full font-bold hover:bg-brand-green transition transform hover:scale-105 duration-200 shadow-[0_0_15px_rgba(255,255,255,0.2)]">
+                        Hemen Başla
+                    </button>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <div class="lg:hidden flex items-center">
+                    <button class="text-white hover:text-brand-green p-2">
+                        <i class="fa-solid fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Bölümü (Görsel İçeriğine Göre Güncellendi) -->
+    <section class="relative pt-32 pb-20 px-4 flex flex-col items-center justify-center min-h-[80vh] text-center overflow-hidden">
+        <!-- Arkaplan Efektleri -->
+        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[500px] bg-brand-green/20 rounded-full blur-[120px] -z-10"></div>
+
+        <div class="inline-flex items-center space-x-2 bg-[#1a1a1a] border border-[#333] rounded-full px-4 py-1.5 mb-8">
+            <span class="text-xs font-semibold text-gray-300">⚡ Türkiye'nin Bulut Oyun Platformu</span>
+        </div>
+
+        <h1 class="text-5xl md:text-6xl font-extrabold tracking-tight mb-6 leading-[1.2]">
+            İstediğin Yerde, İstediğin Cihazda<br>
+            <span class="text-white">İndirmeden Oyna.</span>
+        </h1>
+
+        <p class="text-lg text-gray-400 max-w-3xl mb-10 leading-relaxed">
+            Sahip olduğun oyunları, donanım ihtiyacı olmadan, herhangi bir cihazda, RTX kalitesiyle oyna. İndirme yok, sen sadece oyun keyfine odaklan.
+        </p>
+
+        <div class="flex flex-col md:flex-row gap-4 items-center">
+            <button class="px-8 py-3.5 bg-white text-black font-bold rounded-full hover:bg-gray-200 transition transform hover:scale-105 duration-200">
+                Hemen Dene <i class="fa-solid fa-arrow-right ml-2"></i>
+            </button>
+            <button class="px-8 py-3.5 bg-transparent border border-[#333] hover:border-white text-white font-bold rounded-full transition">
+                Uygun Paketi Bul ✨
+            </button>
+        </div>
+
+        <!-- Mouse Scroll Icon -->
+        <div class="absolute bottom-10 animate-bounce text-gray-500">
+            <div class="w-10 h-10 bg-[#222] rounded-full flex items-center justify-center text-white">
+                <i class="fa-solid fa-plus"></i>
+            </div>
+        </div>
+    </section>
+
+    <!-- Neden Game+ Bölümü -->
+    <section class="py-20 bg-[#0a0a0a] border-y border-white/5 relative overflow-hidden">
+        <!-- Arkaplan Glow Efekti -->
+        <div class="absolute top-0 right-0 w-96 h-96 bg-brand-green/5 rounded-full blur-[100px] -z-10"></div>
+        <div class="absolute bottom-0 left-0 w-96 h-96 bg-brand-green/5 rounded-full blur-[100px] -z-10"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Neden GAME<span class="text-brand-green">+</span>?</h2>
+                <p class="text-gray-400 max-w-2xl mx-auto text-lg">Sadece bir internet bağlantısı ile yüksek performanslı oyun bilgisayarına sahip olmanın avantajlarını keşfet.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Feature 1 -->
+                <div class="bg-brand-panel p-8 rounded-2xl border border-white/5 hover:border-brand-green/30 transition duration-300 group hover:-translate-y-2">
+                    <div class="w-16 h-16 bg-brand-green/10 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-brand-green group-hover:text-black transition duration-300">
+                        <i class="fa-solid fa-microchip text-3xl text-brand-green group-hover:text-black transition"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 text-white">RTX Teknolojisi</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">NVIDIA'nın efsanevi RTX ekran kartı gücüyle, oyunları en yüksek grafik ayarlarında, ışın izleme teknolojisiyle ve DLSS desteğiyle deneyimle.</p>
+                </div>
+
+                <!-- Feature 2 -->
+                <div class="bg-brand-panel p-8 rounded-2xl border border-white/5 hover:border-brand-green/30 transition duration-300 group hover:-translate-y-2">
+                    <div class="w-16 h-16 bg-brand-green/10 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-brand-green group-hover:text-black transition duration-300">
+                        <i class="fa-solid fa-cloud-arrow-down text-3xl text-brand-green group-hover:text-black transition"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 text-white">İndirme Yok, Bekleme Yok</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">Yüzlerce gigabaytlık dosyaları indirmene, güncellemeleri beklemene gerek yok. Oyuna tıkla ve saniyeler içinde bulut üzerinden oynamaya başla.</p>
+                </div>
+
+                <!-- Feature 3 -->
+                <div class="bg-brand-panel p-8 rounded-2xl border border-white/5 hover:border-brand-green/30 transition duration-300 group hover:-translate-y-2">
+                    <div class="w-16 h-16 bg-brand-green/10 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-brand-green group-hover:text-black transition duration-300">
+                        <i class="fa-solid fa-laptop-mobile text-3xl text-brand-green group-hover:text-black transition"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 text-white">İstediğin Cihazda Oyna</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">Eski bilgisayarın, tabletin, telefonun veya akıllı televizyonun artık birer oyun canavarı. Cihazın ne olursa olsun kütüphanen her zaman yanında.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Oyunlar & Kategoriler -->
+    <section id="games-section" class="py-20 bg-[#0d0d0d] relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Desteklenen Oyunlar</h2>
+                <div class="w-24 h-1 bg-brand-green mx-auto rounded-full"></div>
+            </div>
+
+            <!-- Tabs Header -->
+            <div class="flex justify-center mb-12">
+                <div class="bg-white/5 p-1 rounded-full inline-flex backdrop-blur-sm border border-white/5">
+                    <button onclick="switchTab('geforce')" id="tab-geforce" class="px-8 py-3 rounded-full text-sm font-bold transition-all duration-300 bg-brand-green text-black shadow-lg">
+                        <i class="fa-brands fa-nvidia mr-2"></i> GEFORCE NOW
+                    </button>
+                    <button onclick="switchTab('ubisoft')" id="tab-ubisoft" class="px-8 py-3 rounded-full text-sm font-bold transition-all duration-300 text-gray-400 hover:text-white">
+                        <i class="fa-solid fa-gamepad mr-2"></i> UBISOFT+
+                    </button>
+                </div>
+            </div>
+
+            <!-- Tab Content: GeForce Now -->
+            <div id="content-geforce" class="tab-content">
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+                    <!-- Kategori Kartları -->
+                    <div class="game-card group cursor-pointer bg-brand-panel border border-white/5 rounded-xl p-6 hover:border-brand-green/50 transition duration-300 relative overflow-hidden">
+                        <div class="absolute inset-0 bg-brand-green/5 opacity-0 group-hover:opacity-100 transition duration-300"></div>
+                        <div class="flex flex-col items-center justify-center gap-3 relative z-10">
+                            <i class="fa-solid fa-puzzle-piece text-3xl text-gray-500 group-hover:text-brand-green transition duration-300"></i>
+                            <h3 class="font-semibold text-gray-200 group-hover:text-white">Bulmaca</h3>
+                        </div>
+                    </div>
+                    
+                    <div class="game-card group cursor-pointer bg-brand-panel border border-white/5 rounded-xl p-6 hover:border-brand-green/50 transition duration-300 relative overflow-hidden">
+                        <div class="absolute inset-0 bg-brand-green/5 opacity-0 group-hover:opacity-100 transition duration-300"></div>
+                        <div class="flex flex-col items-center justify-center gap-3 relative z-10">
+                            <i class="fa-solid fa-chess-rook text-3xl text-gray-500 group-hover:text-brand-green transition duration-300"></i>
+                            <h3 class="font-semibold text-gray-200 group-hover:text-white">Strateji</h3>
+                        </div>
+                    </div>
+                    
+                    <div class="game-card group cursor-pointer bg-brand-panel border border-white/5 rounded-xl p-6 hover:border-brand-green/50 transition duration-300 relative overflow-hidden">
+                        <div class="absolute inset-0 bg-brand-green/5 opacity-0 group-hover:opacity-100 transition duration-300"></div>
+                        <div class="flex flex-col items-center justify-center gap-3 relative z-10">
+                            <i class="fa-solid fa-bomb text-3xl text-gray-500 group-hover:text-brand-green transition duration-300"></i>
+                            <h3 class="font-semibold text-gray-200 group-hover:text-white">Aksiyon</h3>
+                        </div>
+                    </div>
+                    
+                     <div class="game-card group cursor-pointer bg-brand-panel border border-white/5 rounded-xl p-6 hover:border-brand-green/50 transition duration-300 relative overflow-hidden">
+                        <div class="absolute inset-0 bg-brand-green/5 opacity-0 group-hover:opacity-100 transition duration-300"></div>
+                        <div class="flex flex-col items-center justify-center gap-3 relative z-10">
+                            <i class="fa-solid fa-flag-checkered text-3xl text-gray-500 group-hover:text-brand-green transition duration-300"></i>
+                            <h3 class="font-semibold text-gray-200 group-hover:text-white">Yarış</h3>
+                        </div>
+                    </div>
+                    
+                     <div class="game-card group cursor-pointer bg-brand-panel border border-white/5 rounded-xl p-6 hover:border-brand-green/50 transition duration-300 relative overflow-hidden">
+                        <div class="absolute inset-0 bg-brand-green/5 opacity-0 group-hover:opacity-100 transition duration-300"></div>
+                        <div class="flex flex-col items-center justify-center gap-3 relative z-10">
+                            <i class="fa-solid fa-basketball text-3xl text-gray-500 group-hover:text-brand-green transition duration-300"></i>
+                            <h3 class="font-semibold text-gray-200 group-hover:text-white">Spor</h3>
+                        </div>
+                    </div>
+
+                    <div class="game-card group cursor-pointer bg-brand-panel border border-white/5 rounded-xl p-6 hover:border-brand-green/50 transition duration-300 relative overflow-hidden">
+                        <div class="absolute inset-0 bg-brand-green/5 opacity-0 group-hover:opacity-100 transition duration-300"></div>
+                        <div class="flex flex-col items-center justify-center gap-3 relative z-10">
+                            <i class="fa-solid fa-masks-theater text-3xl text-gray-500 group-hover:text-brand-green transition duration-300"></i>
+                            <h3 class="font-semibold text-gray-200 group-hover:text-white">Canlandırma</h3>
+                        </div>
+                    </div>
+                    
+                    <div class="game-card group cursor-pointer bg-brand-panel border border-white/5 rounded-xl p-6 hover:border-brand-green/50 transition duration-300 relative overflow-hidden">
+                        <div class="absolute inset-0 bg-brand-green/5 opacity-0 group-hover:opacity-100 transition duration-300"></div>
+                        <div class="flex flex-col items-center justify-center gap-3 relative z-10">
+                            <i class="fa-solid fa-plane-departure text-3xl text-gray-500 group-hover:text-brand-green transition duration-300"></i>
+                            <h3 class="font-semibold text-gray-200 group-hover:text-white">Simülasyon</h3>
+                        </div>
+                    </div>
+                    
+                    <div class="game-card group cursor-pointer bg-brand-panel border border-white/5 rounded-xl p-6 hover:border-brand-green/50 transition duration-300 relative overflow-hidden">
+                        <div class="absolute inset-0 bg-brand-green/5 opacity-0 group-hover:opacity-100 transition duration-300"></div>
+                        <div class="flex flex-col items-center justify-center gap-3 relative z-10">
+                            <i class="fa-solid fa-tag text-3xl text-gray-500 group-hover:text-brand-green transition duration-300"></i>
+                            <h3 class="font-semibold text-gray-200 group-hover:text-white">Ücretsiz</h3>
+                        </div>
+                    </div>
+                    
+                </div>
+                <div class="text-center mt-8">
+                     <button class="text-brand-green hover:text-white font-semibold transition border-b border-brand-green pb-1">Tüm Oyunları Görüntüle <i class="fa-solid fa-arrow-right ml-2"></i></button>
+                </div>
+            </div>
+
+            <!-- Tab Content: Ubisoft+ -->
+            <div id="content-ubisoft" class="tab-content hidden">
+                <div class="flex flex-col items-center justify-center py-12 border border-dashed border-white/10 rounded-xl bg-white/5">
+                    <div class="w-16 h-16 bg-white/10 rounded-full flex items-center justify-center mb-4">
+                        <i class="fa-solid fa-ghost text-2xl text-gray-400"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-2">Ubisoft+ Koleksiyonu</h3>
+                    <p class="text-gray-400 text-center max-w-md">Ubisoft hesabını bağlayarak Assassin's Creed, Far Cry ve daha fazlasına anında eriş.</p>
+                    <button class="mt-6 px-6 py-2 border border-brand-green text-brand-green rounded-full hover:bg-brand-green hover:text-black transition">Hesabını Bağla</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-[#050505] pt-16 pb-8 border-t border-white/10 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
+                
+                <!-- Sütun 1: Game+ -->
+                <div>
+                    <div class="flex items-center gap-2 mb-6">
+                         <span class="font-black text-xl tracking-tighter text-white italic">GAME<span class="text-brand-green not-italic">+</span></span>
+                    </div>
+                    <p class="text-gray-500 text-sm mb-6 leading-relaxed">
+                        Türkiye'nin ilk ve tek bulut oyun platformu ile tanışın. Donanım masrafı olmadan en yeni oyunları oynayın.
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="w-8 h-8 rounded bg-white/5 flex items-center justify-center text-gray-400 hover:bg-brand-green hover:text-black transition"><i class="fa-brands fa-twitter"></i></a>
+                        <a href="#" class="w-8 h-8 rounded bg-white/5 flex items-center justify-center text-gray-400 hover:bg-brand-green hover:text-black transition"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="#" class="w-8 h-8 rounded bg-white/5 flex items-center justify-center text-gray-400 hover:bg-brand-green hover:text-black transition"><i class="fa-brands fa-youtube"></i></a>
+                    </div>
+                </div>
+
+                <!-- Sütun 2: GeForce NOW -->
+                <div>
+                    <h4 class="text-white font-bold mb-6 flex items-center gap-2">
+                        <i class="fa-brands fa-nvidia text-brand-green"></i> GeForce NOW
+                    </h4>
+                    <ul class="space-y-3 text-sm text-gray-400">
+                        <li><a href="#" class="hover:text-brand-green transition">Oyunlar</a></li>
+                        <li><a href="#" class="hover:text-brand-green transition">Paketler</a></li>
+                        <li><a href="#" class="hover:text-brand-green transition">İndir ve Oyna</a></li>
+                        <li><a href="#" class="hover:text-brand-green transition">Nasıl Çalışır?</a></li>
+                        <li><a href="#" class="hover:text-brand-green transition">Sistem Gereksinimleri</a></li>
+                    </ul>
+                </div>
+
+                <!-- Sütun 3: Ubisoft+ -->
+                <div>
+                    <h4 class="text-white font-bold mb-6 flex items-center gap-2">
+                        <i class="fa-solid fa-gamepad text-blue-500"></i> Ubisoft+
+                    </h4>
+                    <ul class="space-y-3 text-sm text-gray-400">
+                        <li><a href="#" class="hover:text-brand-green transition">Oyun Kütüphanesi</a></li>
+                        <li><a href="#" class="hover:text-brand-green transition">Abonelik Planları</a></li>
+                        <li><a href="#" class="hover:text-brand-green transition">Hesap Bağlama</a></li>
+                        <li><a href="#" class="hover:text-brand-green transition">SSS</a></li>
+                    </ul>
+                </div>
+
+                <!-- Sütun 4: Hızlı Linkler -->
+                <div>
+                    <h4 class="text-white font-bold mb-6">Kurumsal</h4>
+                    <ul class="space-y-3 text-sm text-gray-400">
+                        <li><a href="#" class="hover:text-brand-green transition">Hakkımızda</a></li>
+                        <li><a href="#" class="hover:text-brand-green transition">Blog & Haberler</a></li>
+                        <li><a href="#" class="hover:text-brand-green transition">Kariyer</a></li>
+                        <li><a href="#" class="hover:text-brand-green transition">İletişim</a></li>
+                        <li><a href="#" class="hover:text-brand-green transition">Yardım Merkezi</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- SEO Akordiyon: Oyun Kategorileri -->
+            <div class="border-t border-white/10 pt-8" id="all-categories">
+                <button onclick="toggleAccordion()" class="flex items-center justify-between w-full text-left group">
+                    <h4 class="text-white font-bold text-lg group-hover:text-brand-green transition">Oyun Kategorileri</h4>
+                    <i id="accordion-icon" class="fa-solid fa-chevron-down text-gray-500 transition-transform duration-300"></i>
+                </button>
+                
+                <div id="category-accordion" class="accordion-content">
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 pt-6 text-sm">
+                        <!-- Tüm Kategoriler (DOM'da mevcut, SEO dostu) -->
+                        <a href="#" class="text-gray-500 hover:text-brand-green transition">Aksiyon Oyunları</a>
+                        <a href="#" class="text-gray-500 hover:text-brand-green transition">Macera Oyunları</a>
+                        <a href="#" class="text-gray-500 hover:text-brand-green transition">Rol Yapma (RPG)</a>
+                        <a href="#" class="text-gray-500 hover:text-brand-green transition">Simülasyon</a>
+                        <a href="#" class="text-gray-500 hover:text-brand-green transition">Strateji</a>
+                        <a href="#" class="text-gray-500 hover:text-brand-green transition">Spor ve Yarış</a>
+                        <a href="#" class="text-gray-500 hover:text-brand-green transition">Bulmaca</a>
+                        <a href="#" class="text-gray-500 hover:text-brand-green transition">Basit Eğlence</a>
+                        <a href="#" class="text-gray-500 hover:text-brand-green transition">Devasa Çok Oyunculu (MMO)</a>
+                        <a href="#" class="text-gray-500 hover:text-brand-green transition">Nişancı (FPS/TPS)</a>
+                        <a href="#" class="text-gray-500 hover:text-brand-green transition">Dövüş Oyunları</a>
+                        <a href="#" class="text-gray-500 hover:text-brand-green transition">Platform</a>
+                        <a href="#" class="text-gray-500 hover:text-brand-green transition">Bağımsız Yapımlar (Indie)</a>
+                        <a href="#" class="text-gray-500 hover:text-brand-green transition">Arcade</a>
+                        <a href="#" class="text-gray-500 hover:text-brand-green transition">MOBA</a>
+                        <a href="#" class="text-gray-500 hover:text-brand-green transition">Battle Royale</a>
+                        <a href="#" class="text-gray-500 hover:text-brand-green transition">Oynaması Ücretsiz</a>
+                        <a href="#" class="text-gray-500 hover:text-brand-green transition">Aile Dostu</a>
+                        <a href="#" class="text-gray-500 hover:text-brand-green transition">Korku Oyunları</a>
+                        <a href="#" class="text-gray-500 hover:text-brand-green transition">Hayatta Kalma</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Alt Footer -->
+            <div class="border-t border-white/10 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center text-xs text-gray-600">
+                <p>&copy; 2024 Game+. NVIDIA Corporation ticari markalarıdır.</p>
+                <div class="flex space-x-6 mt-4 md:mt-0">
+                    <a href="#" class="hover:text-gray-400">Gizlilik Politikası</a>
+                    <a href="#" class="hover:text-gray-400">Kullanım Şartları</a>
+                    <a href="#" class="hover:text-gray-400">Çerez Politikası</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Sekme Değiştirme Fonksiyonu
+        function switchTab(tab) {
+            const btnGeforce = document.getElementById('tab-geforce');
+            const btnUbisoft = document.getElementById('tab-ubisoft');
+            const contentGeforce = document.getElementById('content-geforce');
+            const contentUbisoft = document.getElementById('content-ubisoft');
+
+            if (tab === 'geforce') {
+                btnGeforce.classList.add('bg-brand-green', 'text-black', 'shadow-lg');
+                btnGeforce.classList.remove('text-gray-400', 'hover:text-white');
+                btnUbisoft.classList.remove('bg-brand-green', 'text-black', 'shadow-lg');
+                btnUbisoft.classList.add('text-gray-400', 'hover:text-white');
+                contentGeforce.classList.remove('hidden');
+                contentUbisoft.classList.add('hidden');
+            } else {
+                btnUbisoft.classList.add('bg-brand-green', 'text-black', 'shadow-lg');
+                btnUbisoft.classList.remove('text-gray-400', 'hover:text-white');
+                btnGeforce.classList.remove('bg-brand-green', 'text-black', 'shadow-lg');
+                btnGeforce.classList.add('text-gray-400', 'hover:text-white');
+                contentUbisoft.classList.remove('hidden');
+                contentGeforce.classList.add('hidden');
+            }
+        }
+
+        // Footer Akordiyon Toggle
+        function toggleAccordion() {
+            const content = document.getElementById('category-accordion');
+            const icon = document.getElementById('accordion-icon');
+            
+            content.classList.toggle('active');
+            
+            if (content.classList.contains('active')) {
+                icon.style.transform = 'rotate(180deg)';
+            } else {
+                icon.style.transform = 'rotate(0deg)';
+            }
+        }
+    </script>
+</body>
+</html>
