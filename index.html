@@ -42,14 +42,14 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Footer Akordiyon */
+        /* Footer & Mobile Menu Akordiyon */
         .accordion-content {
             max-height: 0;
             overflow: hidden;
             transition: max-height 0.3s ease-out;
         }
         .accordion-content.active {
-            max-height: 800px; /* İçeriğe göre ayarlanır */
+            max-height: 1000px; /* Yeterince büyük bir değer */
             transition: max-height 0.5s ease-in;
         }
 
@@ -191,7 +191,7 @@
                 </div>
 
                 <!-- Mobile Menu Button -->
-                <div class="lg:hidden flex items-center z-50">
+                <div class="lg:hidden flex items-center z-[60]">
                     <button id="mobile-menu-btn" class="text-white hover:text-brand-green p-2 transition">
                         <i class="fa-solid fa-bars text-2xl"></i>
                     </button>
@@ -199,24 +199,95 @@
             </div>
         </div>
 
-        <!-- Mobil Menü Overlay -->
-        <div id="mobile-menu" class="fixed inset-0 bg-black/95 z-40 hidden lg:hidden flex-col pt-24 px-6 overflow-y-auto">
-            <div class="flex flex-col space-y-4 text-lg font-medium">
-                <a href="#" class="block py-2 text-gray-300 hover:text-brand-green border-b border-white/10">GeForce NOW</a>
-                <a href="#" class="block py-2 text-gray-300 hover:text-brand-green border-b border-white/10">Ubisoft+</a>
-                <a href="#" class="block py-2 text-gray-300 hover:text-brand-green border-b border-white/10">Paketler</a>
-                <a href="#" class="block py-2 text-gray-300 hover:text-brand-green border-b border-white/10">Oyunlar</a>
-                <a href="#" class="block py-2 text-gray-300 hover:text-brand-green border-b border-white/10">Blog</a>
-                <a href="#" class="block py-2 text-gray-300 hover:text-brand-green border-b border-white/10">Fırsatlar</a>
+        <!-- Mobil Menü Overlay (Geliştirilmiş) -->
+        <div id="mobile-menu" class="fixed inset-0 bg-brand-dark z-50 hidden lg:hidden flex-col pt-24 px-6 overflow-y-auto">
+            <div class="flex flex-col space-y-2 text-lg font-medium pb-20">
                 
-                <div class="pt-6 flex flex-col gap-4">
+                <!-- Mobil Accordion: GeForce NOW -->
+                <div class="border-b border-white/10">
+                    <button onclick="toggleMobileSubmenu('mob-geforce', this)" class="w-full py-4 flex justify-between items-center text-gray-300 hover:text-brand-green">
+                        <span>GeForce NOW</span>
+                        <i class="fa-solid fa-chevron-down text-sm transition-transform duration-300"></i>
+                    </button>
+                    <div id="mob-geforce" class="hidden pl-4 pb-4 space-y-3 text-base text-gray-400">
+                        <a href="#" class="block hover:text-white">Oyunlar</a>
+                        <a href="#" class="block hover:text-white">Paketler</a>
+                        <a href="#" class="block hover:text-white">İndir ve Oyna</a>
+                        <a href="#" class="block hover:text-white">Nasıl Çalışır?</a>
+                    </div>
+                </div>
+
+                <!-- Mobil Accordion: Ubisoft+ -->
+                <div class="border-b border-white/10">
+                    <button onclick="toggleMobileSubmenu('mob-ubisoft', this)" class="w-full py-4 flex justify-between items-center text-gray-300 hover:text-brand-green">
+                        <span>Ubisoft+</span>
+                        <i class="fa-solid fa-chevron-down text-sm transition-transform duration-300"></i>
+                    </button>
+                    <div id="mob-ubisoft" class="hidden pl-4 pb-4 space-y-3 text-base text-gray-400">
+                        <a href="#" class="block hover:text-white">Oyunlar</a>
+                        <a href="#" class="block hover:text-white">Paketler</a>
+                        <a href="#" class="block hover:text-white">İndir ve Oyna</a>
+                        <a href="#" class="block hover:text-white">Nasıl Çalışır?</a>
+                    </div>
+                </div>
+
+                <!-- Mobil Accordion: Paketler -->
+                <div class="border-b border-white/10">
+                    <button onclick="toggleMobileSubmenu('mob-paketler', this)" class="w-full py-4 flex justify-between items-center text-gray-300 hover:text-brand-green">
+                        <span>Paketler</span>
+                        <i class="fa-solid fa-chevron-down text-sm transition-transform duration-300"></i>
+                    </button>
+                    <div id="mob-paketler" class="hidden pl-4 pb-4 space-y-3 text-base text-gray-400">
+                        <a href="#" class="block hover:text-white">GeForce NOW Paketleri</a>
+                        <a href="#" class="block hover:text-white">Ubisoft+ Paketleri</a>
+                    </div>
+                </div>
+
+                <!-- Mobil Accordion: Desteklenen Oyunlar -->
+                <div class="border-b border-white/10">
+                    <button onclick="toggleMobileSubmenu('mob-oyunlar', this)" class="w-full py-4 flex justify-between items-center text-gray-300 hover:text-brand-green">
+                        <span>Desteklenen Oyunlar</span>
+                        <i class="fa-solid fa-chevron-down text-sm transition-transform duration-300"></i>
+                    </button>
+                    <div id="mob-oyunlar" class="hidden pl-4 pb-4 space-y-3 text-base text-gray-400">
+                        <div class="font-bold text-white mb-2 text-sm uppercase">GeForce NOW</div>
+                        <div class="grid grid-cols-2 gap-2 mb-4">
+                            <a href="#" class="block text-sm">Aksiyon</a>
+                            <a href="#" class="block text-sm">Macera</a>
+                            <a href="#" class="block text-sm">RPG</a>
+                            <a href="#" class="block text-sm">Strateji</a>
+                            <a href="#" class="block text-sm">Simülasyon</a>
+                            <a href="#" class="block text-sm">Spor</a>
+                        </div>
+                        <div class="font-bold text-white mb-2 text-sm uppercase pt-2 border-t border-white/5">Ubisoft+</div>
+                        <a href="#" class="block text-sm">Tüm Oyunlar</a>
+                    </div>
+                </div>
+
+                <!-- Fırsatlar (Düz Link) -->
+                <a href="#" class="block py-4 text-gray-300 hover:text-brand-green border-b border-white/10">Fırsatlar</a>
+
+                <!-- Mobil Accordion: Blog -->
+                <div class="border-b border-white/10">
+                    <button onclick="toggleMobileSubmenu('mob-blog', this)" class="w-full py-4 flex justify-between items-center text-gray-300 hover:text-brand-green">
+                        <span>Blog</span>
+                        <i class="fa-solid fa-chevron-down text-sm transition-transform duration-300"></i>
+                    </button>
+                    <div id="mob-blog" class="hidden pl-4 pb-4 space-y-3 text-base text-gray-400">
+                        <a href="#" class="block hover:text-white">Haberler</a>
+                        <a href="#" class="block hover:text-white">Oyun İncelemeleri</a>
+                        <a href="#" class="block hover:text-white">GFN Yazıları</a>
+                    </div>
+                </div>
+                
+                <div class="pt-8 flex flex-col gap-4">
                     <button class="w-full border border-white/30 text-white py-3 rounded-full font-medium hover:bg-white hover:text-black transition">
                         ✨ Tanışalım mı?
                     </button>
                     <button class="w-full bg-brand-green text-black py-3 rounded-full font-bold hover:bg-emerald-400 transition">
                         Hemen Başla
                     </button>
-                    <a href="#" class="text-center text-sm text-gray-400 hover:text-white">Giriş Yap</a>
+                    <a href="#" class="text-center text-sm text-gray-400 hover:text-white">Zaten üye misin? Giriş Yap</a>
                 </div>
             </div>
         </div>
@@ -489,7 +560,7 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
                 
-                <!-- Sütun 1: Game+ -->
+                <!-- Sütun 1: Game+ (Mobilde Her Zaman Açık) -->
                 <div>
                     <div class="flex items-center gap-2 mb-6">
                          <span class="font-black text-xl tracking-tighter text-white italic">GAME<span class="text-brand-green not-italic">+</span></span>
@@ -504,44 +575,62 @@
                     </div>
                 </div>
 
-                <!-- Sütun 2: GeForce NOW -->
-                <div>
-                    <h4 class="text-white font-bold mb-6 flex items-center gap-2">
-                        <i class="fa-brands fa-nvidia text-brand-green"></i> GeForce NOW
-                    </h4>
-                    <ul class="space-y-3 text-sm text-gray-400">
-                        <li><a href="#" class="hover:text-brand-green transition">Oyunlar</a></li>
-                        <li><a href="#" class="hover:text-brand-green transition">Paketler</a></li>
-                        <li><a href="#" class="hover:text-brand-green transition">İndir ve Oyna</a></li>
-                        <li><a href="#" class="hover:text-brand-green transition">Nasıl Çalışır?</a></li>
-                        <li><a href="#" class="hover:text-brand-green transition">Sistem Gereksinimleri</a></li>
-                    </ul>
+                <!-- Sütun 2: GeForce NOW (Mobilde Accordion) -->
+                <div class="border-b md:border-none border-white/10 pb-4 md:pb-0">
+                    <button onclick="toggleFooterMobile('foot-geforce', this)" class="w-full flex justify-between items-center md:cursor-default mb-0 md:mb-6 group">
+                        <h4 class="text-white font-bold flex items-center gap-2">
+                            <i class="fa-brands fa-nvidia text-brand-green"></i> GeForce NOW
+                        </h4>
+                        <i class="fa-solid fa-chevron-down text-gray-500 md:hidden transition-transform duration-300"></i>
+                    </button>
+                    <!-- Mobilde Gizli, Masaüstünde Açık -->
+                    <div id="foot-geforce" class="hidden md:block pt-4 md:pt-0">
+                        <ul class="space-y-3 text-sm text-gray-400">
+                            <li><a href="#" class="hover:text-brand-green transition">Oyunlar</a></li>
+                            <li><a href="#" class="hover:text-brand-green transition">Paketler</a></li>
+                            <li><a href="#" class="hover:text-brand-green transition">İndir ve Oyna</a></li>
+                            <li><a href="#" class="hover:text-brand-green transition">Nasıl Çalışır?</a></li>
+                            <li><a href="#" class="hover:text-brand-green transition">Sistem Gereksinimleri</a></li>
+                        </ul>
+                    </div>
                 </div>
 
-                <!-- Sütun 3: Ubisoft+ -->
-                <div>
-                    <h4 class="text-white font-bold mb-6 flex items-center gap-2">
-                        <i class="fa-solid fa-gamepad text-blue-500"></i> Ubisoft+
-                    </h4>
-                    <ul class="space-y-3 text-sm text-gray-400">
-                        <li><a href="#" class="hover:text-brand-green transition">Oyunlar</a></li>
-                        <li><a href="#" class="hover:text-brand-green transition">Paketler</a></li>
-                        <li><a href="#" class="hover:text-brand-green transition">İndir ve Oyna</a></li>
-                        <li><a href="#" class="hover:text-brand-green transition">Nasıl Çalışır?</a></li>
-                        <li><a href="#" class="hover:text-brand-green transition">Sistem Gereksinimleri</a></li>
-                    </ul>
+                <!-- Sütun 3: Ubisoft+ (Mobilde Accordion) -->
+                <div class="border-b md:border-none border-white/10 pb-4 md:pb-0">
+                    <button onclick="toggleFooterMobile('foot-ubisoft', this)" class="w-full flex justify-between items-center md:cursor-default mb-0 md:mb-6 group">
+                        <h4 class="text-white font-bold flex items-center gap-2">
+                            <i class="fa-solid fa-gamepad text-blue-500"></i> Ubisoft+
+                        </h4>
+                        <i class="fa-solid fa-chevron-down text-gray-500 md:hidden transition-transform duration-300"></i>
+                    </button>
+                     <!-- Mobilde Gizli, Masaüstünde Açık -->
+                    <div id="foot-ubisoft" class="hidden md:block pt-4 md:pt-0">
+                        <ul class="space-y-3 text-sm text-gray-400">
+                            <li><a href="#" class="hover:text-brand-green transition">Oyunlar</a></li>
+                            <li><a href="#" class="hover:text-brand-green transition">Paketler</a></li>
+                            <li><a href="#" class="hover:text-brand-green transition">İndir ve Oyna</a></li>
+                            <li><a href="#" class="hover:text-brand-green transition">Nasıl Çalışır?</a></li>
+                            <li><a href="#" class="hover:text-brand-green transition">Sistem Gereksinimleri</a></li>
+                        </ul>
+                    </div>
                 </div>
 
-                <!-- Sütun 4: Hızlı Linkler -->
-                <div>
-                    <h4 class="text-white font-bold mb-6">Kurumsal</h4>
-                    <ul class="space-y-3 text-sm text-gray-400">
-                        <li><a href="#" class="hover:text-brand-green transition">Hakkımızda</a></li>
-                        <li><a href="#" class="hover:text-brand-green transition">Blog & Haberler</a></li>
-                        <li><a href="#" class="hover:text-brand-green transition">Kariyer</a></li>
-                        <li><a href="#" class="hover:text-brand-green transition">İletişim</a></li>
-                        <li><a href="#" class="hover:text-brand-green transition">Yardım Merkezi</a></li>
-                    </ul>
+                <!-- Sütun 4: Kurumsal (Mobilde Accordion) -->
+                <div class="border-b md:border-none border-white/10 pb-4 md:pb-0">
+                    <button onclick="toggleFooterMobile('foot-kurumsal', this)" class="w-full flex justify-between items-center md:cursor-default mb-0 md:mb-6 group">
+                        <h4 class="text-white font-bold">Kurumsal</h4>
+                        <i class="fa-solid fa-chevron-down text-gray-500 md:hidden transition-transform duration-300"></i>
+                    </button>
+                     <!-- Mobilde Gizli, Masaüstünde Açık -->
+                    <div id="foot-kurumsal" class="hidden md:block pt-4 md:pt-0">
+                        <ul class="space-y-3 text-sm text-gray-400">
+                            <li><a href="#" class="hover:text-brand-green transition">Hakkımızda</a></li>
+                            <li><a href="#" class="hover:text-brand-green transition">Blog & Haberler</a></li>
+                            <li><a href="#" class="hover:text-brand-green transition">Kariyer</a></li>
+                            <li><a href="#" class="hover:text-brand-green transition">İletişim</a></li>
+                            <li><a href="#" class="hover:text-brand-green transition">Yardım Merkezi</a></li>
+                        </ul>
+                    </div>
                 </div>
             </div>
 
@@ -600,7 +689,7 @@
             menu.classList.toggle('hidden');
             menu.classList.toggle('flex');
             
-            // İkonu değiştir (opsiyonel ama şık durur)
+            // İkonu değiştir
             const icon = btn.querySelector('i');
             if (menu.classList.contains('flex')) {
                 icon.classList.remove('fa-bars');
@@ -610,6 +699,39 @@
                 icon.classList.add('fa-bars');
             }
         });
+
+        // Mobil Alt Menü Toggle (Accordion)
+        function toggleMobileSubmenu(id, btnElement) {
+            const content = document.getElementById(id);
+            const icon = btnElement.querySelector('i');
+            
+            if (content.classList.contains('hidden')) {
+                content.classList.remove('hidden');
+                icon.style.transform = 'rotate(180deg)';
+                btnElement.classList.add('text-brand-green');
+            } else {
+                content.classList.add('hidden');
+                icon.style.transform = 'rotate(0deg)';
+                btnElement.classList.remove('text-brand-green');
+            }
+        }
+
+        // Footer Mobil Toggle (Accordion)
+        function toggleFooterMobile(id, btnElement) {
+            // Sadece mobilde çalışsın (md breakpoint altı)
+            if (window.innerWidth >= 768) return;
+
+            const content = document.getElementById(id);
+            const icon = btnElement.querySelector('i');
+
+            if (content.classList.contains('hidden')) {
+                content.classList.remove('hidden');
+                icon.style.transform = 'rotate(180deg)';
+            } else {
+                content.classList.add('hidden');
+                icon.style.transform = 'rotate(0deg)';
+            }
+        }
 
         // Sekme Değiştirme Fonksiyonu
         function switchTab(tab) {
@@ -635,7 +757,7 @@
             }
         }
 
-        // Footer Akordiyon Toggle
+        // Genel Footer Akordiyon Toggle (Oyun Kategorileri)
         function toggleAccordion() {
             const content = document.getElementById('category-accordion');
             const icon = document.getElementById('accordion-icon');
